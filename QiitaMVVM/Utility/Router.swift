@@ -37,7 +37,6 @@ final class Router: RouterProtocol {
           return
         }
         let viewModel = WebViewModel(qiitaModel: qiitaModel)
-//        viewModel.configure(with: qiitaModel)
         web.inject(viewModel: viewModel)
         print("showWeb\(qiitaModel)")
         show(from: from, to: web)
