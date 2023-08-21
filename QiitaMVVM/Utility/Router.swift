@@ -32,13 +32,13 @@ final class Router: RouterProtocol {
     }
 
     func showWeb(from: UIViewController, qiitaModel: QiitaModel) {
+
         guard let web = UIStoryboard.init(name: "Web", bundle: nil).instantiateInitialViewController() as? WebViewController else {
           return
         }
-//        let presenter = WebPresenter(output: web, qiitaModel: qiitaModel)
-//        web.inject(presenter: presenter)
+        let viewModel = WebViewModel(qiitaModel: qiitaModel)
+        web.inject(viewModel: viewModel)
         print("showWeb\(qiitaModel)")
-        web.configure(with: qiitaModel)
         show(from: from, to: web)
     }
     private func show(from: UIViewController, to: UIViewController, completion:(() -> Void)? = nil){

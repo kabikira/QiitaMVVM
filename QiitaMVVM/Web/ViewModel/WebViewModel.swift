@@ -11,8 +11,7 @@ import RxCocoa
 import NSObject_Rx
 
 protocol WebViewModelInput {
-    // Routeから値を受け取ることがInputなのかはよくわからない
-    func configure(with model: QiitaModel)
+    // 今の機能だとインプットはない
 }
 
 protocol WebViewModelOutput {
@@ -20,6 +19,14 @@ protocol WebViewModelOutput {
 }
 
 final class WebViewModel: WebViewModelInput, WebViewModelOutput, HasDisposeBag {
+    private var qiitaModel: QiitaModel
+
+    init(qiitaModel: QiitaModel) {
+        self.qiitaModel = qiitaModel
+        let request = URLRequest(url: qiitaModel.url)
+        _requestRelay.accept(request)
+    }
+
     // 出力側
     private let _requestRelay = BehaviorRelay<URLRequest?>(value: nil)
     var requestObservable: Observable<URLRequest> {
@@ -27,9 +34,4 @@ final class WebViewModel: WebViewModelInput, WebViewModelOutput, HasDisposeBag {
         return _requestRelay.asObservable().compactMap { $0 }
     }
 
-    func configure(with model: QiitaModel) {
-        // QiitaModelからURLを取得し、それをURLRequestとして流す。
-        let request = URLRequest(url: model.url)
-        _requestRelay.accept(request)
-    }
 }
