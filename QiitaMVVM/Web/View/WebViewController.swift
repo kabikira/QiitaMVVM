@@ -12,15 +12,13 @@ import RxSwift
 
 final class WebViewController: UIViewController {
     @IBOutlet private weak var webView: WKWebView!
-    private let viewModel: WebViewModel = WebViewModel()
-    private lazy var input: WebViewModelInput = viewModel
+    private var viewModel: WebViewModel!
     private lazy var output: WebViewModelOutput = viewModel
 
-    func configure(with model: QiitaModel) {
-            input.configure(with: model)
+    // RouterからViewModelを注入
+    func inject(viewModel: WebViewModel) {
+            self.viewModel = viewModel
         }
-
-
     override func viewDidLoad() {
         super.viewDidLoad()
         bindOutputStream()
