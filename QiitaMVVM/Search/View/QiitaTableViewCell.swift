@@ -23,8 +23,21 @@ final class QiitaTableViewCell: UITableViewCell {
 
     func configure(qiitaModel: QiitaModel) {
         self.titleLabel.text = qiitaModel.title
-        iconImageView.kf.indicatorType = .activity
-        iconImageView.kf.setImage(with: qiitaModel.user.profileImageURL)
-
+        iconImageView.kf.indicatorType = .activity  // システムインジケーターの指定
+        // 角を丸くする
+        iconImageView.layer.cornerRadius = 10  // 半径を指定
+        iconImageView.layer.masksToBounds = true // 丸みを反映
+        // ダウンサンプル
+        let processor = DownsamplingImageProcessor(size: iconImageView.bounds.size)
+        |> RoundCornerImageProcessor(cornerRadius: 10)
+        // オプションをセット
+        iconImageView.kf.setImage(
+            with: qiitaModel.user.profileImageURL,
+            options: [
+                .processor(processor),
+                .scaleFactor(UIScreen.main.scale),
+                .transition(.fade(1)),  // フェードイン効果を1秒で
+            ]
+        )
     }
 }
